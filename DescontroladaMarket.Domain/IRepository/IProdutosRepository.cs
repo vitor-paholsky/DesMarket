@@ -10,4 +10,7 @@ namespace DescontroladaMarket.Domain.IRepository;
 
 public interface IProdutosRepository : IRepositoryBase<Produtos>
 {
+    IEnumerable<Produtos> GetAllProdutos();
+    Produtos GetProdutoByName(string name);
+    void UpdateProdutos(Produtos produtos);
 }

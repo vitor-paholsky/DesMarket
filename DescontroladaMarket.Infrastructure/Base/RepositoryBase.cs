@@ -13,11 +13,9 @@ namespace DescontroladaMarket.Infrastructure.Base;
 
 public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
 {
-    protected RepositoryContext RepositoryContext { get; set; }
+    protected RepositoryContext RepositoryContext { get; set; } 
 
-    public IRepositoryBase<Produtos> Produtos => throw new NotImplementedException();
-
-    public RepositoryBase(RepositoryContext repositoryContext)
+    protected RepositoryBase(RepositoryContext repositoryContext)
     {
         RepositoryContext = repositoryContext;
     }

@@ -39,8 +39,7 @@ namespace DescontroladaMarket.Domain.Repository
         }
         public RepositoryWrapper(RepositoryContext repositoryContext)
         {
-            _repoContext = repositoryContext;
-            _repoContext.SaveChanges();
+            _repoContext = repositoryContext;           
         }
         public void Save()
         {

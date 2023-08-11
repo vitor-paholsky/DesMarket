@@ -1,0 +1,37 @@
+﻿@page "/produtos"
+@using DescontroladaMarket.Web.WebServices;
+@inject ApiService _apiService
+
+<h3>Editar Produto</h3>
+
+@if (_apiService.GetProdutos == null)
+{
+    <p><em>Carregando...</em></p>
+}
+else
+{
+    <!-- Aqui você pode criar um formulário para edição do produto e usar o método UpdateProduto do serviço -->
+}
+
+@code {
+    // [Parameter] public int Id { get; set; }
+    // private Produtos? produto;
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     produto = await _apiService.GetProduto(Id);
+    // }
+
+    // private async Task HandleSave()
+    // {
+    //     if (await _apiService.UpdateProduto(produto))
+    //     {
+    //         // Navega de volta para a lista de produtos
+    //         NavigationManager.NavigateTo("/produtos");
+    //     }
+    //     else
+    //     {
+    //         // Mostra algum erro
+    //     }
+    // }
+}

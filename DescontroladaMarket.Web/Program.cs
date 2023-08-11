@@ -4,6 +4,7 @@ using DescontroladaMarket.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using DescontroladaMarket.Web.WebServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,8 @@ builder.Services.AddDbContext<RepositoryContext>(options =>
 {
     options.UseInMemoryDatabase("MemoryDatabase");
 });
+
+builder.Services.AddScoped<ApiService>();
 
 var app = builder.Build();
 

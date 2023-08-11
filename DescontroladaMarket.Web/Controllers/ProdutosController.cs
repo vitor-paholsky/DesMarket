@@ -3,6 +3,7 @@ using DescontroladaMarket.Domain.Models;
 using DescontroladaMarket.Infrastructure.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace DescontroladaMarket.Web.Controllers;
 
@@ -18,7 +19,7 @@ public class ProdutosController : ControllerBase
     }
 
     // GET: api/Produtos
-    [HttpGet]
+    [HttpGet("api/produtos")]
     public IActionResult GetProdutos()
     {
         return Ok(_context.Produtos.FindAll());
@@ -39,46 +40,56 @@ public class ProdutosController : ControllerBase
     }
 
     // POST: api/Produtos
-    [HttpPost]
-    public async Task<IActionResult> CreateProduto([FromBody] Produtos produto)
+    [HttpPost("Create")]
+    public async Task<ActionResult> CreateProduto([FromBody] Produtos produto)
     {
-        if (!ModelState.IsValid)
+        try
         {
-            return BadRequest(ModelState);
+            _context.Produtos.Create(produto);
+
+            if (_context == null)
+            {
+                return NotFound(HttpStatusCode.NoContent);
+            }
+
+            _context.Save();
+
+            return Ok(HttpStatusCode.OK);
         }
-
-        _context.Produtos.Create(produto);
-
-       
-
-        return CreatedAtAction("GetProduto", new { id = produto.Id }, produto);
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     // PUT: api/Produtos/5
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateProduto(int id, [FromBody] Produtos produto)
+    [HttpPut("{id}/Update")]
+    public async Task<ActionResult> UpdateProduto([FromBody] Produtos produto)
     {
-        if (id != produto.Id)
-        {
-            return BadRequest();
-        }
-
-        _context.Produtos.Update(produto);
-
         try
         {
+            var produtoUpload = _context.Produtos.GetProdutoByName(produto.Nome);
 
+            produtoUpload.Nome = produto.Nome;
+            produtoUpload.Descricao = produto.Descricao;
+            produtoUpload.PrecoVenda = produto.PrecoVenda;
+            produtoUpload.Quantidade = produto.Quantidade;
+
+            _context.Produtos.UpdateProdutos(produtoUpload);
+
+            if (_context == null)
+            {
+                return NotFound(HttpStatusCode.NoContent);
+            }
+
+            _context.Save();
+
+            return Ok(HttpStatusCode.OK);
         }
-        catch
+        catch (Exception ex)
         {
-            //if (!_con(e => e.Id == id))
-            //{
-            //    return NotFound();
-            //}
-            //throw;
+            return BadRequest(ex.Message);
         }
-
-        return NoContent();
     }
 }
 

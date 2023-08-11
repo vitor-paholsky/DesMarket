@@ -1,0 +1,55 @@
+﻿@page "/produtos"
+@using DescontroladaMarket.Domain.Models;
+@using DescontroladaMarket.Web.WebServices;
+@inject ApiService _apiService
+
+
+<h3>Lista de Produtos</h3>
+
+@if (_apiService.GetProdutos == null)
+{
+    <p><em>Carregando...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Preço Venda</th>
+                <!-- outras colunas -->
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var produto in produtos)
+            {
+                <tr>
+                    <td>@produto.Nome</td>
+                    <td>@produto.PrecoVenda</td>
+                    <!-- outras colunas -->
+                    <td>
+                        <button @onclick="() => EditProduto(produto)">Editar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Produtos>? produtos;
+
+    protected override async Task OnInitializedAsync()
+    {
+    produtos = await _apiService.GetProdutos() ?? new List<Produtos>();
+
+    }
+
+    private void EditProduto(Produtos produto)
+    {
+    // Navega para a página de edição
+  //  NavigationManager.NavigateTo($"/produto/edit/{produto.Id}");
+    }
+    }
+}

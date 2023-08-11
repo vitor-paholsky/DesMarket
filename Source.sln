@@ -3,19 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DescontroladaMarket.Web", "DescontroladaMarket.Web\DescontroladaMarket.Web.csproj", "{181B566F-D89F-4CC5-9810-7F3A8DFE2598}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DescontroladaMarket.Web", "DescontroladaMarket.Web\DescontroladaMarket.Web.csproj", "{181B566F-D89F-4CC5-9810-7F3A8DFE2598}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DescontroladaMarket.Domain", "DescontroladaMarket.Domain\DescontroladaMarket.Domain.csproj", "{32B0CFBC-6215-4730-8CFD-C064A9E2B29E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DescontroladaMarket.Domain", "DescontroladaMarket.Domain\DescontroladaMarket.Domain.csproj", "{32B0CFBC-6215-4730-8CFD-C064A9E2B29E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DescontroladaMarket.Infrastructure", "DescontroladaMarket.Infrastructure\DescontroladaMarket.Infrastructure.csproj", "{A204F6B7-5DE3-481B-BF17-93D7E1BC9B34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DescontroladaMarket.Infrastructure", "DescontroladaMarket.Infrastructure\DescontroladaMarket.Infrastructure.csproj", "{A204F6B7-5DE3-481B-BF17-93D7E1BC9B34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{181B566F-D89F-4CC5-9810-7F3A8DFE2598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -30,5 +27,11 @@ Global
 		{A204F6B7-5DE3-481B-BF17-93D7E1BC9B34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A204F6B7-5DE3-481B-BF17-93D7E1BC9B34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A204F6B7-5DE3-481B-BF17-93D7E1BC9B34}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6EB70FD4-6378-4687-AFF5-CF0F42059621}
 	EndGlobalSection
 EndGlobal

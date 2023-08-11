@@ -12,4 +12,10 @@ public class ProdutosRepository : RepositoryBase<Produtos>, IProdutosRepository
         : base(repositoryContext)
     {
     }
+
+    public IEnumerable<Produtos> GetAllProdutos() => FindAll().ToList().OrderBy(produtos => produtos.Id);
+
+    public Produtos GetProdutoByName(string nome) => FindByCondition(nome => nome.Equals(nome)).ToList().FirstOrDefault();
+
+    public void UpdateProdutos(Produtos produtos) => Update(produtos);
 }
