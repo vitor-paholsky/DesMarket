@@ -1,9 +1,84 @@
 ﻿@page "/"
+@using DescontroladaMarket.Domain.Models;
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Cadastro de produtos</h1>
 
-Welcome to your new app.
+<EditForm Model="novoProduto" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+   
+    <p style="margin-top: 20px;">Cadastre os produtos abaixo:</p>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    <div class="form-group row" style="margin-bottom: 20px">      
+        <div class="col-sm-4">
+            <label for="nome" class="col-form-label">Nome:</label>
+            <InputText id="nome" class="form-control w-75" @bind-Value="novoProduto.Nome" />
+        </div>       
+        <div class="col-sm-8">
+            <label for="precoVenda" class="col-form-label">Preço de Venda:</label>
+            <input id="precoVenda" type="text" class="form-control w-25" @bind="novoProduto.PrecoVenda" @ref="precoVendaInput" />
+        </div>
+    </div>
+
+    <div class="form-group row" style="margin-bottom: 20px">      
+        <div class="col-sm-4">
+            <label for="descricao" class="col-form-label">Descrição:</label>
+            <InputText id="descricao" class="form-control w-100" @bind-Value="novoProduto.Descricao" />
+        </div>
+    </div>
+    <div class="form-group row" style="margin-bottom: 20px">       
+        <div class="col-sm-4">
+            <label for="quantidade" class="col-form-label">Quantidade:</label>
+            <InputNumber id="quantidade" class="form-control w-100" @bind-Value="novoProduto.Quantidade" />
+        </div>
+    </div>
+    
+    <label for="isOrganic">Produto orgânico? </label>
+    <div class="form-check" style="margin-bottom: 2px">
+        <input class="form-check-input" type="radio" name="isOrganic" id="isOrganicYes" @bind="novoProduto.Tipo">
+        <label class="form-check-label" for="isOrganicYes">Sim</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="isOrganic" id="isOrganicNo" @bind="novoProduto.Tipo">
+        <label class="form-check-label" for="isOrganicNo">Não</label>
+    </div>
+
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-md-10">
+            <div class="form-group row">
+                <label for="dataCadastro" class="col-sm-2 col-form-label">Data de cadastro:</label>
+                <div class="col-sm-2">
+                    <InputDate id="dataCadastro" class="form-control" @bind-Value="novoProduto.DataCadastro" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" style="margin-bottom: 20px" class="btn btn-primary">Cadastrar</button>
+</EditForm>
+
+@code {
+    
+    @inject IJSRuntime JS
+    private Produtos novoProduto = new Produtos { DataCadastro = DateTime.Now };
+
+    private ElementReference precoVendaInput;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Delay(2000);
+            await JS.InvokeVoidAsync("applyMaskToInput", precoVendaInput);
+        }
+    }
+    private async Task HandleValidSubmit()
+    {
+   
+      //  await _apiService.AddProduto(novoProduto);
+        
+    }
+}
+
