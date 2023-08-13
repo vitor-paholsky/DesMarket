@@ -1,7 +1,6 @@
 ﻿using DescontroladaMarket.Domain.Contracts;
 using DescontroladaMarket.Domain.IRepository;
 using DescontroladaMarket.Infrastructure.Context;
-using DescontroladaMarket.Infrastructure.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +13,6 @@ namespace DescontroladaMarket.Domain.Repository
     {
         private RepositoryContext _repoContext;
         private IProdutosRepository _produtos;
-        private ITiposRepository _tipos;
         public IProdutosRepository Produtos
         {
             get
@@ -25,18 +23,7 @@ namespace DescontroladaMarket.Domain.Repository
                 }
                 return _produtos;
             }
-        }
-        public ITiposRepository Tipos
-        {
-            get
-            {
-                if (_tipos == null)
-                {
-                    _tipos = new TiposRepository(_repoContext);
-                }
-                return _tipos;
-            }
-        }
+        }       
         public RepositoryWrapper(RepositoryContext repositoryContext)
         {
             _repoContext = repositoryContext;           

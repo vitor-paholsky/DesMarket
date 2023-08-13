@@ -16,5 +16,4 @@ public class RepositoryContext : DbContext
     {
     }
     public DbSet<Produtos>? Produtos { get; set; }
-    public DbSet<Tipos>? Tipos { get; set; }
 }
