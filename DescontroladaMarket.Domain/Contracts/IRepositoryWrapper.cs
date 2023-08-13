@@ -10,7 +10,5 @@ namespace DescontroladaMarket.Domain.Contracts;
 public interface IRepositoryWrapper
 {
     IProdutosRepository Produtos { get; }
-    ITiposRepository Tipos { get; }
-    void Save();
     Task SaveAsync();
 }

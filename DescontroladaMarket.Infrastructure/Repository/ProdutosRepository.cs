@@ -14,8 +14,4 @@ public class ProdutosRepository : RepositoryBase<Produtos>, IProdutosRepository
     }
 
     public IEnumerable<Produtos> GetAllProdutos() => FindAll().ToList().OrderBy(produtos => produtos.Id);
-
-    public Produtos GetProdutoByName(string nome) => FindByCondition(nome => nome.Equals(nome)).ToList().FirstOrDefault();
-
-    public void UpdateProdutos(Produtos produtos) => Update(produtos);
 }
