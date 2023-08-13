@@ -45,5 +45,10 @@ namespace DescontroladaMarket.Domain.Repository
         {
             _repoContext.SaveChanges();
         }
+
+        public Task SaveAsync()
+        {
+            return _repoContext.SaveChangesAsync();
+        }
     }
 }

@@ -1,0 +1,90 @@
+﻿@page "/cadastro-produtos"
+@inject HttpClient Http;
+@inject NavigationManager NavManager;
+@using DescontroladaMarket.Domain.Models;
+
+<PageTitle>Cadastro de Produtos</PageTitle>
+
+<EditForm Model="@novoProduto" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p style="margin-top: 20px;">Cadastre os produtos abaixo:</p>
+
+    <div class="form-group row" style="margin-bottom: 20px">
+        <div class="col-sm-4">
+            <label for="nome" class="col-form-label">Nome:</label>
+            <InputText id="nome" class="form-control w-75" @bind-Value="novoProduto.Nome" />
+        </div>
+        <div class="col-sm-8">
+            <label for="precoVenda" class="col-form-label">Preço de Venda:</label>
+            <input id="precoVenda" type="text" class="form-control w-25" @bind-value="novoProduto.PrecoVenda" />
+        </div>
+    </div>
+
+    <div class="form-group row" style="margin-bottom: 20px">
+        <div class="col-sm-4">
+            <label for="descricao" class="col-form-label">Descrição:</label>
+            <InputText id="descricao" class="form-control w-100" @bind-Value="novoProduto.Descricao" />
+        </div>
+    </div>
+    <div class="form-group row" style="margin-bottom: 20px">
+        <div class="col-sm-4">
+            <label for="quantidade" class="col-form-label">Quantidade:</label>
+            <InputNumber id="quantidade" class="form-control w-100" @bind-Value="novoProduto.Quantidade" />
+        </div>
+    </div>
+
+    <label for="organico">Produto orgânico? </label>
+    <div class="form-check" style="margin-bottom: 2px">
+        <input class="form-check-input" type="radio" name="organico" id="organico" @bind="novoProduto.Tipo">
+        <label class="form-check-label" for="organico" option value="True">Sim</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="organico" id="organico" @bind="novoProduto.Tipo">
+        <label class="form-check-label" for="organico" option value="False">Não</label>
+    </div>
+
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-md-10">
+            <div class="form-group row">
+                <label for="dataCadastro" class="col-sm-2 col-form-label">Data de cadastro:</label>
+                <div class="col-sm-2">
+                    <InputDate id="dataCadastro" class="form-control" @bind-Value="novoProduto.DataCadastro" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(produtoCadastrado))
+    {
+        <div class="alert alert-success">
+            @produtoCadastrado
+        </div>
+    }
+
+    <button type="submit" style="margin-bottom: 20px" class="btn btn-primary">Cadastrar</button>
+
+</EditForm>
+
+@code {
+    private Produtos produtos = new();
+    private string produtoCadastrado = string.Empty;
+
+    private async Task HandleValidSubmit()
+    {
+        var response = await Http.PostAsJsonAsync("api/produtos", novoProduto);
+
+        if (response.IsSuccessStatusCode)
+        {
+            novoProduto = new Produtos { DataCadastro = DateTime.Now };
+            produtoCadastrado = "Produto cadastrado com sucesso!";
+        }
+    }
+
+    private Produtos novoProduto = new Produtos { DataCadastro = DateTime.Now };
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }    
+}

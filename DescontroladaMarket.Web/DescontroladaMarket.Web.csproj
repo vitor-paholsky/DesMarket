@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Client\Client.csproj" />
     <ProjectReference Include="..\DescontroladaMarket.Domain\DescontroladaMarket.Domain.csproj" />
     <ProjectReference Include="..\DescontroladaMarket.Infrastructure\DescontroladaMarket.Infrastructure.csproj" />
   </ItemGroup>

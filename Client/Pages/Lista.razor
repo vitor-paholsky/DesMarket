@@ -1,0 +1,67 @@
+﻿@page "/lista"
+@using DescontroladaMarket.Domain.Models;
+@inject HttpClient Http
+
+<PageTitle>Lista Produtos</PageTitle>
+
+<h1>Lista produtos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Preço de Venda</th>
+            <th>Descrição</th>
+            <th>Quantidade</th>
+            <th>Tipo</th>
+            <th>Data de Cadastro</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var produto in Produtos.Skip((CurrentPage - 1) * ItemsPerPage).Take(ItemsPerPage))
+        {
+            <tr>
+                <td>@produto.Nome</td>
+                <td>@produto.PrecoVenda</td>
+                <td>@produto.Descricao</td>
+                <td>@produto.Quantidade</td>
+                <td>@produto.Tipo</td>
+                <td>@produto.DataCadastro.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<button @onclick="PrevPage" disabled="@(!CanPrevPage)" class="btn btn-primary">❮ Anterior</button>
+<button @onclick="NextPage" disabled="@(!CanNextPage)" class="btn btn-primary">Próximo ❯</button>
+
+@code {
+    private List<Produtos> Produtos { get; set; } = new List<Produtos>();
+    private int CurrentPage { get; set; } = 1;
+    private int ItemsPerPage { get; set; } = 5;
+    private bool CanPrevPage => CurrentPage > 1;
+    private bool CanNextPage => CurrentPage < (Math.Ceiling((decimal)Produtos.Count / ItemsPerPage));
+
+
+    private void NextPage()
+    {
+        if (CanNextPage) CurrentPage++;
+    }
+
+    private void PrevPage()
+    {
+        if (CanPrevPage) CurrentPage--;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Produtos = await Http.GetFromJsonAsync<List<Produtos>>("api/produtos");
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("Erro ao puxar produtos cadastrados");
+        }
+    }
+}

@@ -12,4 +12,5 @@ public interface IRepositoryWrapper
     IProdutosRepository Produtos { get; }
     ITiposRepository Tipos { get; }
     void Save();
+    Task SaveAsync();
 }
