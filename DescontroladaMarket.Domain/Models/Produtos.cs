@@ -1,4 +1,6 @@
-﻿namespace DescontroladaMarket.Domain.Models;
+﻿using Flunt.Notifications;
+
+namespace DescontroladaMarket.Domain.Models;
 
 public class Produtos
 {

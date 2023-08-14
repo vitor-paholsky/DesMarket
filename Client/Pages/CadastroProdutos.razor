@@ -8,40 +8,62 @@
 <EditForm Model="@novoProduto" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <p style="margin-top: 20px;">Cadastre os produtos abaixo:</p>
+    <p style="margin-top: 20px;">Preencha o formulário abaixo para cadastrar produtos:</p>
 
     <div class="form-group row" style="margin-bottom: 20px">
         <div class="col-sm-4">
-            <label for="nome" class="col-form-label">Nome:</label>
+            <label for="nome" class="col-form-label">
+                Nome: @if (string.IsNullOrWhiteSpace(novoProduto.Nome))
+                {
+                    <span class="text-danger">*</span>
+                }
+            </label>
             <InputText id="nome" class="form-control w-75" @bind-Value="novoProduto.Nome" />
         </div>
         <div class="col-sm-8">
-            <label for="precoVenda" class="col-form-label">Preço de Venda:</label>
+            <label for="precoVenda" class="col-form-label">
+                Preço de Venda: @if (novoProduto.PrecoVenda == null)
+                {
+                    <span class="text-danger">*</span>
+                }
+            </label>
             <input id="precoVenda" type="text" class="form-control w-25" @bind-value="novoProduto.PrecoVenda" />
+            <ValidationMessage For="@(() => novoProduto.PrecoVenda)" />
         </div>
     </div>
 
     <div class="form-group row" style="margin-bottom: 20px">
         <div class="col-sm-4">
-            <label for="descricao" class="col-form-label">Descrição:</label>
+            <label for="descricao" class="col-form-label">
+                Descrição: @if (string.IsNullOrWhiteSpace(novoProduto.Descricao))
+                {
+                    <span class="text-danger">*</span>
+                }
+            </label>
             <InputText id="descricao" class="form-control w-100" @bind-Value="novoProduto.Descricao" />
         </div>
     </div>
+
     <div class="form-group row" style="margin-bottom: 20px">
         <div class="col-sm-4">
-            <label for="quantidade" class="col-form-label">Quantidade:</label>
+            <label for="quantidade" class="col-form-label">
+                Quantidade: @if (novoProduto.Quantidade == null)
+                {
+                    <span class="text-danger">*</span>
+                }
+            </label>
             <InputNumber id="quantidade" class="form-control w-100" @bind-Value="novoProduto.Quantidade" />
         </div>
     </div>
 
     <label for="organico">Produto orgânico? </label>
     <div class="form-check" style="margin-bottom: 2px">
-        <input class="form-check-input" type="radio" name="organico" id="organico" @bind="novoProduto.Tipo">
-        <label class="form-check-label" for="organico" option value="True">Sim</label>
+        <input class="form-check-input" type="radio" name="organico" id="organicoSim" value="True" checked="@novoProduto.Tipo" @onchange="HandleOrganico" />
+        <label class="form-check-label" for="organicoSim">Sim</label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="radio" name="organico" id="organico" @bind="novoProduto.Tipo">
-        <label class="form-check-label" for="organico" option value="False">Não</label>
+        <input class="form-check-input" type="radio" name="organico" id="organicoNao" value="False" checked="@(!novoProduto.Tipo)" @onchange="HandleOrganico" />
+        <label class="form-check-label" for="organicoNao">Não</label>
     </div>
 
     <div class="row" style="margin-bottom: 20px">
@@ -60,6 +82,14 @@
         <div class="alert alert-success">
             @produtoCadastrado
         </div>
+
+    }
+
+    @if (!string.IsNullOrEmpty(mensagemErro))
+    {
+        <div class="alert alert-danger">
+            @mensagemErro
+        </div>
     }
 
     <button type="submit" style="margin-bottom: 20px" class="btn btn-primary">Cadastrar</button>
@@ -69,12 +99,46 @@
 @code {
     private Produtos produtos = new();
     private string produtoCadastrado = string.Empty;
+    private string mensagemErro = "";
+
+    private void HandleOrganico(ChangeEventArgs e)
+    {
+        novoProduto.Tipo = bool.Parse(e.Value.ToString());
+    }
+
+    private class ErrorResponse
+    {
+        public string ?message { get; set; }
+    }
 
     private async Task HandleValidSubmit()
     {
+        if (novoProduto.PrecoVenda == null)
+        {
+            mensagemErro = "Preço de venda é obrigatório.";
+            return;
+        }
+
+        if (novoProduto.Descricao == null)
+        {
+            mensagemErro = "Descrição é obrigatória";
+            return;
+        }
+
+        if (novoProduto.Quantidade == null)
+        {
+            mensagemErro = "Quantidade é obrigatória";
+            return;
+        }
+
         var response = await Http.PostAsJsonAsync("api/produtos", novoProduto);
 
-        if (response.IsSuccessStatusCode)
+        if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+        {
+            var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+            mensagemErro = errorResponse?.message;
+        }
+        else
         {
             novoProduto = new Produtos { DataCadastro = DateTime.Now };
             produtoCadastrado = "Produto cadastrado com sucesso!";

@@ -1,5 +1,6 @@
 using DescontroladaMarket.Domain.Contracts;
 using DescontroladaMarket.Domain.Models;
+using DescontroladaMarket.Domain.Services;
 using DescontroladaMarket.Infrastructure.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +13,10 @@ namespace DescontroladaMarket.Web.Controllers;
 public class ProdutosController : ControllerBase
 {
     private readonly IRepositoryWrapper _context;
-    public ProdutosController(IRepositoryWrapper context)
+    private readonly IProdutoService _produtoService;
+    public ProdutosController(IRepositoryWrapper context, IProdutoService produtoService)
     {
+        _produtoService = produtoService;
         _context = context;
     }
 
@@ -27,7 +30,7 @@ public class ProdutosController : ControllerBase
         }
         catch (Exception)
         {
-            return StatusCode(500, "Erro ao registrar produto");
+            return StatusCode(500, "Erro ao buscar produto");
         }
     }
 
@@ -36,14 +39,18 @@ public class ProdutosController : ControllerBase
     {
         try
         {
+            var produtoAdicionado = await _produtoService.AdicionarProduto(produto);
             _context.Produtos.Create(produto);
             await _context.SaveAsync();
 
             return Ok(produto);
         }
-        catch (Exception)
+        catch (ArgumentException ex)
         {
-            return BadRequest("Erro ao registrar produto");
+            return BadRequest(new 
+            { 
+                message = ex.Message 
+            });
         }
     }
 }

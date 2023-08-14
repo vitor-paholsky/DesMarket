@@ -1,4 +1,5 @@
 ﻿using DescontroladaMarket.Domain.Models;
+using Flunt.Notifications;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,6 @@ public class RepositoryContext : DbContext
     public RepositoryContext(DbContextOptions options)
             : base(options)
     {
-    }
+    }    
     public DbSet<Produtos>? Produtos { get; set; }
 }
