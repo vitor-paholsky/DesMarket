@@ -2,6 +2,7 @@
 @inject HttpClient Http;
 @inject NavigationManager NavManager;
 @using DescontroladaMarket.Domain.Models;
+@using System.Globalization;
 
 <PageTitle>Cadastro de Produtos</PageTitle>
 
@@ -27,7 +28,7 @@
                     <span class="text-danger">*</span>
                 }
             </label>
-            <input id="precoVenda" type="text" class="form-control w-25" @bind-value="novoProduto.PrecoVenda" />
+            <input id="precoVenda" type="text" class="form-control w-25" @bind-value="PrecoVendaFormatted" />
             <ValidationMessage For="@(() => novoProduto.PrecoVenda)" />
         </div>
     </div>
@@ -100,6 +101,21 @@
     private Produtos produtos = new();
     private string produtoCadastrado = string.Empty;
     private string mensagemErro = "";
+
+    string formataMoeda(decimal value)
+    {
+        var moedaBRL = CultureInfo.GetCultureInfo("pt-BR");
+        return value.ToString("C", moedaBRL);
+    }
+
+    private string PrecoVendaFormatted
+    {
+        get => formataMoeda(novoProduto.PrecoVenda);
+        set
+        {
+            novoProduto.PrecoVenda = Decimal.Parse(value, NumberStyles.Currency, CultureInfo.GetCultureInfo("pt-BR"));
+        }
+    }
 
     private void HandleOrganico(ChangeEventArgs e)
     {

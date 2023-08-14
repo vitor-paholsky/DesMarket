@@ -1,6 +1,7 @@
 ﻿@page "/lista"
 @using DescontroladaMarket.Domain.Models;
 @inject HttpClient Http
+@using System.Globalization
 
 <PageTitle>Lista Produtos</PageTitle>
 
@@ -22,7 +23,7 @@
         {
             <tr>
                 <td>@produto.Nome</td>
-                <td>@produto.PrecoVenda</td>
+                <td>@formataMoeda(produto.PrecoVenda)</td>
                 <td>@produto.Descricao</td>
                 <td>@produto.Quantidade</td>
                 <td>@(produto.Tipo ? "Sim" : "Não")</td>
@@ -41,6 +42,12 @@
     private int ItemsPorPagina { get; set; } = 5;
     private bool AutPaginaAnterior => PaginaAtual > 1;
     private bool AutProximaPagina => PaginaAtual < (Math.Ceiling((decimal)Produtos.Count / ItemsPorPagina));
+
+    string formataMoeda(decimal value)
+    {
+        var moedaBRL = CultureInfo.GetCultureInfo("pt-BR");
+        return value.ToString("C", moedaBRL);
+    }
 
     private void ProximaPagina()
     {
